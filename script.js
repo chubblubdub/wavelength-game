@@ -26,27 +26,28 @@ const categories = [
     "Serious - Funny"
 ];
 
-let voteTally = {};  // Store votes for each category
-let timer = 15; // Timer for voting
-let interval;
+let voteTally = {};  
+let currentCategory = "";
+let players = ["Player1", "Player2", "Player3", "Player4"];  
+let currentTurn = 0; 
 let hasVoted = false;
+let answers = {}; // Store player answers
 
 // Function to get 3 random categories from the list
 function getRandomCategories() {
-    const shuffled = categories.sort(() => 0.5 - Math.random()); // Shuffle categories randomly
-    return shuffled.slice(0, 3); // Select the first three after shuffling
+    const shuffled = categories.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 3);
 }
 
-// Function to display the random categories for voting
+// Function to display random categories for voting
 function displayRandomCategories() {
-    const randomCategories = getRandomCategories(); // Get 3 random categories
-    const categoriesContainer = document.getElementById('categories-vote'); // Ensure this element exists in HTML
+    const randomCategories = getRandomCategories();  
+    const categoriesContainer = document.getElementById('categories-vote'); 
 
-    categoriesContainer.innerHTML = ''; // Clear any old categories displayed
-    voteTally = {}; // Reset the tally for new vote session
+    categoriesContainer.innerHTML = '';  
+    voteTally = {};  
 
     randomCategories.forEach((category) => {
-        // Initialize vote tally for each category
         voteTally[category] = 0;
 
         const categoryButton = document.createElement('button');
@@ -63,40 +64,75 @@ function displayRandomCategories() {
         categoryButton.onclick = () => handleVote(category, voteCount);
     });
 
-    startTimer();
+    // Hide the voting UI after category selection
+    document.getElementById('category-name').textContent = "Select a category";
+    document.getElementById('current-category').style.display = 'block';
 }
 
 // Function to handle voting
 function handleVote(category, voteCountElement) {
-    if (hasVoted) return;  // Prevent voting if already voted
+    if (hasVoted) return;
 
     voteTally[category]++;
-    voteCountElement.textContent = voteTally[category];  // Update tally for the category
+    voteCountElement.textContent = voteTally[category];  
 
-    hasVoted = true;  // Mark that the user has voted
+    hasVoted = true;
+
+    // After voting, determine the selected category with highest votes
+    const selectedCategory = Object.keys(voteTally).reduce((a, b) => voteTally[a] > voteTally[b] ? a : b);
+
+    // Now, show the selected category
+    document.getElementById('category-name').textContent = selectedCategory;
+
+    // Hide the category voting and display the game phase
+    document.getElementById('categories-vote').style.display = 'none';
+    document.getElementById('current-category').style.display = 'none';
+    document.getElementById('game-phase').style.display = 'block';
+    document.getElementById('game-category').textContent = selectedCategory;
+    document.getElementById('current-player').textContent = `It's ${players[currentTurn]}'s turn!`;
+
+    displayPlayersTurn();
 }
 
-// Timer countdown function
-function startTimer() {
-    interval = setInterval(() => {
-        timer--;
-        document.getElementById('timer').textContent = timer;  // Update timer on screen
+// Function to display players around a circle (turn order)
+function displayPlayersTurn() {
+    const playersContainer = document.getElementById('players-circle');
+    playersContainer.innerHTML = ''; 
 
-        if (timer <= 0) {
-            clearInterval(interval);  // Stop the timer
-            disableVoting();  // Disable further voting
+    players.forEach((player, index) => {
+        const playerElement = document.createElement('div');
+        playerElement.classList.add('player');
+        playerElement.textContent = player;
+
+        if (index === currentTurn) {
+            playerElement.style.backgroundColor = "#FF6347";
         }
-    }, 1000);
+
+        playersContainer.appendChild(playerElement);
+    });
 }
 
-// Function to disable voting after the timer ends
-function disableVoting() {
-    const buttons = document.querySelectorAll('.category-button');
-    buttons.forEach(button => button.disabled = true);  // Disable all category buttons
+// Function to handle player submitting their answer
+document.getElementById('submit-answer').onclick = () => {
+    const playerAnswer = document.getElementById('answer-input').value;
+    if (playerAnswer.trim() !== "") {
+        answers[players[currentTurn]] = playerAnswer;
+        alert(`${players[currentTurn]} answered: ${playerAnswer}`);  // Show answer for now
 
-    // Optionally, you can show the final tallies after voting ends
-    console.log("Final Tallies:", voteTally);
+        nextTurn();
+    }
+};
+
+// Function to simulate player turns
+function nextTurn() {
+    currentTurn = (currentTurn + 1) % players.length;  
+    displayPlayersTurn();  
+
+    if (currentTurn === 0) {
+        // Optionally, add logic to proceed to next round or phase
+        alert("All players have submitted their answers.");
+    }
 }
 
-// Call this function to display the categories when the page loads
+// Start the game with the first round of categories
 displayRandomCategories();
