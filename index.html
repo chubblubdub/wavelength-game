@@ -5,19 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wavelength Game</title>
     <style>
-        .category-button {
-            background-color: #4CAF50; /* Green background */
-            color: white;
-            border: none;
-            padding: 10px;
-            margin: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
-        .category-button:hover {
-            background-color: #45a049;
-        }
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+}
+
+p {
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+}
+
+#categories-vote {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.category-button {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s ease;
+}
+
+.category-button:hover {
+    background-color: #45a049;
+}
+
+.category-button:active {
+    transform: scale(0.98); /* Slightly shrink the button when clicked */
+}
+
     </style>
 </head>
 <body>
