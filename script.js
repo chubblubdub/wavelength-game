@@ -43,7 +43,7 @@ function getRandomCategories() {
 // Function to display random categories for voting
 function displayRandomCategories() {
     const randomCategories = getRandomCategories();  
-    const categoriesContainer = document.getElementById('categories-vote'); 
+    const categoriesContainer = document.getElementById('categories-list'); 
 
     categoriesContainer.innerHTML = '';  
     voteTally = {};  
@@ -67,7 +67,7 @@ function displayRandomCategories() {
 
     // Hide the category name until the voting phase is done
     document.getElementById('category-name').textContent = "";
-    document.getElementById('current-category').style.display = 'block';
+    document.getElementById('current-category').style.display = 'block';  // Ensure the voting phase is visible
 }
 
 // Function to handle voting
@@ -105,7 +105,7 @@ function handleVote(category, voteCountElement) {
 function displaySelectedCategory(selectedCategory) {
     // Display the winning category
     document.getElementById('category-name').textContent = selectedCategory;
-    document.getElementById('categories-vote').style.display = 'none';  
+    document.getElementById('categories-list').style.display = 'none';  
     document.getElementById('current-category').style.display = 'none';  
     document.getElementById('game-phase').style.display = 'block';  
 
