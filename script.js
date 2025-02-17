@@ -26,6 +26,11 @@ const categories = [
     "Serious - Funny"
 ];
 
+let voteTally = {};  // Store votes for each category
+let timer = 15; // Timer for voting
+let interval;
+let hasVoted = false;
+
 // Function to get 3 random categories from the list
 function getRandomCategories() {
     const shuffled = categories.sort(() => 0.5 - Math.random()); // Shuffle categories randomly
@@ -38,14 +43,59 @@ function displayRandomCategories() {
     const categoriesContainer = document.getElementById('categories-vote'); // Ensure this element exists in HTML
 
     categoriesContainer.innerHTML = ''; // Clear any old categories displayed
+    voteTally = {}; // Reset the tally for new vote session
 
-    // Add each random category as a button
     randomCategories.forEach((category) => {
+        // Initialize vote tally for each category
+        voteTally[category] = 0;
+
         const categoryButton = document.createElement('button');
         categoryButton.textContent = category;
         categoryButton.classList.add('category-button');
+
+        const voteCount = document.createElement('span');
+        voteCount.classList.add('vote-count');
+        voteCount.textContent = voteTally[category];
+
+        categoryButton.appendChild(voteCount);
         categoriesContainer.appendChild(categoryButton);
+
+        categoryButton.onclick = () => handleVote(category, voteCount);
     });
+
+    startTimer();
+}
+
+// Function to handle voting
+function handleVote(category, voteCountElement) {
+    if (hasVoted) return;  // Prevent voting if already voted
+
+    voteTally[category]++;
+    voteCountElement.textContent = voteTally[category];  // Update tally for the category
+
+    hasVoted = true;  // Mark that the user has voted
+}
+
+// Timer countdown function
+function startTimer() {
+    interval = setInterval(() => {
+        timer--;
+        document.getElementById('timer').textContent = timer;  // Update timer on screen
+
+        if (timer <= 0) {
+            clearInterval(interval);  // Stop the timer
+            disableVoting();  // Disable further voting
+        }
+    }, 1000);
+}
+
+// Function to disable voting after the timer ends
+function disableVoting() {
+    const buttons = document.querySelectorAll('.category-button');
+    buttons.forEach(button => button.disabled = true);  // Disable all category buttons
+
+    // Optionally, you can show the final tallies after voting ends
+    console.log("Final Tallies:", voteTally);
 }
 
 // Call this function to display the categories when the page loads
