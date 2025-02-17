@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wavelength Game</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wavelength Game</title>
+    <style>
+        .category-button {
+            background-color: #4CAF50; /* Green background */
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .category-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-  <div class="game-container">
+
     <h1>Wavelength Game</h1>
-    
-    <!-- Player Name Input -->
-    <div id="username-section">
-      <input type="text" id="username" placeholder="Enter your username" />
-      <button onclick="createOrJoinGame()">Join Game</button>
+    <p>Welcome to the Wavelength Game!</p>
+
+    <!-- Voting section -->
+    <div id="categories-vote">
+        <!-- Random categories will be displayed here -->
     </div>
 
-    <!-- Game Section -->
-    <div id="game-section" style="display: none;">
-      <div id="category-section">
-        <p>Vote for a category</p>
-        <button onclick="chooseCategory('Good Foods')">Good Foods</button>
-        <button onclick="chooseCategory('Bad Foods')">Bad Foods</button>
-        <button onclick="chooseCategory('Vacation Spots')">Vacation Spots</button>
-      </div>
-      
-      <div id="guesser-section" style="display: none;">
-        <p>Waiting for the guesser...</p>
-      </div>
-
-      <div id="guessing-section" style="display: none;">
-        <p>Guess the number based on others' inputs:</p>
-        <input type="range" id="guess-slider" min="1" max="10" />
-        <button onclick="submitGuess()">Submit Guess</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="app.js"></script> <!-- If you are saving the JavaScript in a separate file -->
 </body>
 </html>
