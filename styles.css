@@ -1,42 +1,46 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f1f1f1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.game-container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
-  text-align: center;
-  font-size: 2em;
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
 }
 
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
+p {
+    text-align: center;
+    color: #666;
+    font-size: 18px;
 }
 
-button:hover {
-  background-color: #45a049;
+#categories-vote {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
 }
 
-input[type="text"], input[type="range"] {
-  padding: 10px;
-  margin: 10px 0;
-  width: 100%;
-  box-sizing: border-box;
+.category-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.category-button:hover {
+    background-color: #45a049;
+}
+
+.category-button:active {
+    transform: scale(0.98);
 }
