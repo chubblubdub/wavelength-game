@@ -33,6 +33,7 @@ let selectedCategory = null;
 // Track players and turn management
 let players = ["Player 1", "Player 2", "Player 3", "Player 4"];
 let currentPlayerIndex = 0;
+let answers = []; // Store answers for each player
 
 document.addEventListener("DOMContentLoaded", () => {
   displayCategories();
@@ -97,21 +98,74 @@ function startGame() {
     playersContainer.appendChild(playerDiv);
   });
 
-  // Transition to the next part of the game (e.g., start the timer, enter answers, etc.)
-  // For now, just show the player names in a circle
-  displayNextTurn();
+  // Start the first player's turn
+  nextTurn();
 }
 
-// Function to move to the next player's turn
-function displayNextTurn() {
+// Function to handle the turn-based system
+function nextTurn() {
   const playersContainer = document.getElementById("players-circle");
-  const playerDivs = playersContainer.getElementsByClassName("player");
-  
-  // Cycle to the next player in the list
+  const currentPlayer = players[currentPlayerIndex];
+  const answersContainer = document.getElementById("answers-container");
+
+  // Show current player
+  const currentPlayerDiv = document.createElement("div");
+  currentPlayerDiv.classList.add("current-player");
+  currentPlayerDiv.textContent = `${currentPlayer}'s Turn!`;
+
+  // Display input field for the player to enter their answer
+  const inputField = document.createElement("input");
+  inputField.id = "player-answer";
+  inputField.placeholder = `Enter your answer for "${selectedCategory.name}"`;
+
+  const submitButton = document.createElement("button");
+  submitButton.textContent = "Submit";
+  submitButton.onclick = () => submitAnswer(inputField.value);
+
+  // Add elements to the DOM
+  answersContainer.innerHTML = "";
+  answersContainer.appendChild(currentPlayerDiv);
+  answersContainer.appendChild(inputField);
+  answersContainer.appendChild(submitButton);
+}
+
+// Function to submit the current player's answer
+function submitAnswer(answer) {
+  const answersContainer = document.getElementById("answers-container");
+
+  // Store the answer for the current player
+  answers[currentPlayerIndex] = answer;
+
+  // Display the answer in a list
+  const answerDiv = document.createElement("div");
+  answerDiv.classList.add("player-answer");
+  answerDiv.textContent = `${players[currentPlayerIndex]}: ${answer}`;
+  answersContainer.appendChild(answerDiv);
+
+  // Move to the next player's turn
   currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
 
-  // Highlight the current player (you could style this further)
-  for (let i = 0; i < playerDivs.length; i++) {
-    playerDivs[i].style.backgroundColor = i === currentPlayerIndex ? "#FF6347" : "lightgray";
+  // Proceed to the next turn
+  if (currentPlayerIndex === 0) {
+    // All players have answered, start the next phase (e.g., review answers or score)
+    endRound();
+  } else {
+    nextTurn(); // Show the next player's turn
   }
+}
+
+// Function to handle the end of the round
+function endRound() {
+  const answersContainer = document.getElementById("answers-container");
+  answersContainer.innerHTML = `<h2>Round Over!</h2><p>All answers are in!</p>`;
+
+  // Display all players' answers
+  answers.forEach((answer, index) => {
+    const answerDiv = document.createElement("div");
+    answerDiv.classList.add("all-answers");
+    answerDiv.textContent = `${players[index]}: ${answer}`;
+    answersContainer.appendChild(answerDiv);
+  });
+
+  // Optionally, you can add logic here for scoring or moving to the next round
 }
