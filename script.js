@@ -32,6 +32,7 @@ let players = ["Player1", "Player2", "Player3", "Player4"];
 let currentTurn = 0; 
 let hasVoted = false;
 let answers = {}; // Store player answers
+let maxVotes = 0;  // Track max votes for category
 
 // Function to get 3 random categories from the list
 function getRandomCategories() {
@@ -64,8 +65,8 @@ function displayRandomCategories() {
         categoryButton.onclick = () => handleVote(category, voteCount);
     });
 
-    // Hide the voting UI after category selection
-    document.getElementById('category-name').textContent = "Select a category";
+    // Hide the category name until the voting phase is done
+    document.getElementById('category-name').textContent = "";
     document.getElementById('current-category').style.display = 'block';
 }
 
@@ -78,16 +79,37 @@ function handleVote(category, voteCountElement) {
 
     hasVoted = true;
 
-    // After voting, determine the selected category with highest votes
+    // After voting, check for the selected category with highest votes
     const selectedCategory = Object.keys(voteTally).reduce((a, b) => voteTally[a] > voteTally[b] ? a : b);
 
-    // Now, show the selected category
-    document.getElementById('category-name').textContent = selectedCategory;
+    // If the selected category has the most votes, show it
+    if (voteTally[selectedCategory] > maxVotes) {
+        maxVotes = voteTally[selectedCategory];
+        currentCategory = selectedCategory;
+    }
 
-    // Hide the category voting and display the game phase
-    document.getElementById('categories-vote').style.display = 'none';
-    document.getElementById('current-category').style.display = 'none';
-    document.getElementById('game-phase').style.display = 'block';
+    // Continue checking until there's a winner
+    const checkVotes = setInterval(() => {
+        const currentMaxVotes = Math.max(...Object.values(voteTally));
+        const winnerCategory = Object.keys(voteTally).find(category => voteTally[category] === currentMaxVotes);
+
+        if (currentMaxVotes > maxVotes) {
+            clearInterval(checkVotes);  
+            // Once category has highest votes, stop checking and display the result
+            displaySelectedCategory(winnerCategory);
+        }
+    }, 1000);
+}
+
+// Function to display selected category after voting
+function displaySelectedCategory(selectedCategory) {
+    // Display the winning category
+    document.getElementById('category-name').textContent = selectedCategory;
+    document.getElementById('categories-vote').style.display = 'none';  
+    document.getElementById('current-category').style.display = 'none';  
+    document.getElementById('game-phase').style.display = 'block';  
+
+    // Show the current player's turn and initiate player cycle
     document.getElementById('game-category').textContent = selectedCategory;
     document.getElementById('current-player').textContent = `It's ${players[currentTurn]}'s turn!`;
 
@@ -105,7 +127,7 @@ function displayPlayersTurn() {
         playerElement.textContent = player;
 
         if (index === currentTurn) {
-            playerElement.style.backgroundColor = "#FF6347";
+            playerElement.style.backgroundColor = "#FF6347";  
         }
 
         playersContainer.appendChild(playerElement);
@@ -117,7 +139,7 @@ document.getElementById('submit-answer').onclick = () => {
     const playerAnswer = document.getElementById('answer-input').value;
     if (playerAnswer.trim() !== "") {
         answers[players[currentTurn]] = playerAnswer;
-        alert(`${players[currentTurn]} answered: ${playerAnswer}`);  // Show answer for now
+        alert(`${players[currentTurn]} answered: ${playerAnswer}`);  
 
         nextTurn();
     }
@@ -129,7 +151,6 @@ function nextTurn() {
     displayPlayersTurn();  
 
     if (currentTurn === 0) {
-        // Optionally, add logic to proceed to next round or phase
         alert("All players have submitted their answers.");
     }
 }
