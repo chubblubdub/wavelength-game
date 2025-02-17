@@ -7,31 +7,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <h1>Wavelength Game</h1>
-    <p>Welcome to the Wavelength Game!</p>
-
-    <!-- Current Category -->
-    <div id="current-category">
-        <h2>Category: <span id="category-name">Select a category to start</span></h2>
-    </div>
-
-    <!-- Voting Section (buttons for categories) -->
+    <!-- Categories Voting Section -->
     <div id="categories-vote">
-        <!-- Buttons will appear here dynamically -->
+        <h2>Select a Category:</h2>
+        <div id="categories-list"></div> <!-- Buttons will be dynamically generated here -->
+        <div id="current-category" style="display:none;">  <!-- Hidden until category is selected -->
+            <h3 id="category-name"></h3> <!-- Selected category will show up here -->
+        </div>
     </div>
 
-    <!-- Game Phase -->
-    <div id="game-phase" style="display: none;">
-        <h3 id="current-player"></h3>
-        <h4>Answer for the category: <span id="game-category"></span></h4>
-        <input type="text" id="answer-input" placeholder="Enter your answer...">
+    <!-- Game Phase Section -->
+    <div id="game-phase" style="display:none;">
+        <h2>Game Phase</h2>
+        <div id="game-category"></div> <!-- The selected category will show here -->
+        <div id="players-circle"></div> <!-- Player cycle goes here -->
+        <div id="current-player"></div> <!-- The current player whose turn it is -->
+        <input type="text" id="answer-input" placeholder="Enter your answer here">
         <button id="submit-answer">Submit Answer</button>
-    </div>
-
-    <!-- Turn display (Players in the circle) -->
-    <div id="players-circle">
-        <!-- Player names will appear here dynamically -->
     </div>
 
     <script src="script.js"></script>
