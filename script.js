@@ -104,7 +104,6 @@ function startGame() {
 
 // Function to handle the turn-based system
 function nextTurn() {
-  const playersContainer = document.getElementById("players-circle");
   const currentPlayer = players[currentPlayerIndex];
   const answersContainer = document.getElementById("answers-container");
 
@@ -123,7 +122,7 @@ function nextTurn() {
   submitButton.onclick = () => submitAnswer(inputField.value);
 
   // Add elements to the DOM
-  answersContainer.innerHTML = "";
+  answersContainer.innerHTML = ""; // Clear previous content
   answersContainer.appendChild(currentPlayerDiv);
   answersContainer.appendChild(inputField);
   answersContainer.appendChild(submitButton);
@@ -132,6 +131,11 @@ function nextTurn() {
 // Function to submit the current player's answer
 function submitAnswer(answer) {
   const answersContainer = document.getElementById("answers-container");
+
+  if (!answer) {
+    alert("Please enter an answer!");
+    return;
+  }
 
   // Store the answer for the current player
   answers[currentPlayerIndex] = answer;
