@@ -1,65 +1,53 @@
-let username = '';
-let gameCategory = '';
-let isGuesser = false;
-let players = [];
-let currentPlayerIndex = 0;
+// Original categories list (for comparison)
+const categories = [
+  "Snack - Meal",
+  "Near - Far",
+  "Villain - Hero",
+  "Good Movie - Bad Movie",
+  "Simple - Complex Concept",
+  "Fast - Slow",
+  "Cold - Hot",
+  "New Technology - Old Technology",
+  "Healthy - Unhealthy",
+  "Modern - Vintage",
+  "Calm - Chaotic",
+  "Quiet - Loud",
+  "Easy - Hard",
+  "Expensive - Cheap",
+  "Sweet - Savory",
+  "Short - Long",
+  "Light - Dark",
+  "Organized - Messy",
+  "Clean - Dirty",
+  "Big - Small",
+  "Heavy - Light",
+  "Friendly - Hostile",
+  "Famous - Unknown",
+  "Boring - Exciting",
+  "Serious - Funny"
+];
 
-function createOrJoinGame() {
-  username = document.getElementById('username').value;
-  if (username.trim() === '') {
-    alert('Please enter a username!');
-    return;
-  }
+// Function to get 3 random categories from the list
+function getRandomCategories() {
+  const shuffled = categories.sort(() => 0.5 - Math.random()); // Shuffle categories randomly
+  return shuffled.slice(0, 3); // Select the first three after shuffling
+}
+
+// Function to display the random categories for voting
+function displayRandomCategories() {
+  const randomCategories = getRandomCategories(); // Get 3 random categories
+  const categoriesContainer = document.getElementById('categories-vote'); // Ensure this element exists in HTML
   
-  // Show the game section
-  document.getElementById('username-section').style.display = 'none';
-  document.getElementById('game-section').style.display = 'block';
-  
-  players.push(username);
-  startGame();
+  categoriesContainer.innerHTML = ''; // Clear any old categories displayed
+
+  // Add each random category as a button
+  randomCategories.forEach((category) => {
+    const categoryButton = document.createElement('button');
+    categoryButton.textContent = category;
+    categoryButton.classList.add('category-button');
+    categoriesContainer.appendChild(categoryButton);
+  });
 }
 
-function startGame() {
-  // Start with category selection
-  document.getElementById('category-section').style.display = 'block';
-}
-
-function chooseCategory(category) {
-  gameCategory = category;
-  // Hide category selection and move to guessing section
-  document.getElementById('category-section').style.display = 'none';
-  document.getElementById('guesser-section').style.display = 'block';
-  
-  // Simulate the arrow rotating through the players
-  setTimeout(() => {
-    rotateGuesser();
-  }, 1500); // 15 seconds to vote on category, could also add timer
-}
-
-function rotateGuesser() {
-  isGuesser = true;
-  currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-  const currentGuesser = players[currentPlayerIndex];
-
-  alert(`${currentGuesser} is the guesser!`);
-  document.getElementById('guesser-section').style.display = 'none';
-  document.getElementById('guessing-section').style.display = 'block';
-  
-  // Show other players' input
-  console.log('Category:', gameCategory);
-  console.log('Players: ', players);
-}
-
-function submitGuess() {
-  const guess = document.getElementById('guess-slider').value;
-  alert(`You guessed: ${guess}`);
-  // Process guess submission logic (e.g., compare with the actual value)
-  // Update game state, inform other players, and rotate to the next round
-  endTurn();
-}
-
-function endTurn() {
-  isGuesser = false;
-  document.getElementById('guessing-section').style.display = 'none';
-  document.getElementById('guesser-section').style.display = 'block';
-}
+// Call this function to display the categories when needed (e.g., when players are ready to vote)
+displayRandomCategories();
